@@ -24,8 +24,9 @@ let OnMouseMove (e:MouseMoveEventArgs):unit=
 
     match WD.inputMode with
     | Default -> ()
-    | Rotate -> WD.alfa <- WD.alfa + x/100.
-                WD.beta <- capBeta WD.beta y
+    | Rotate -> WD.pitch <- capBeta WD.pitch y
+                WD.yaw <- WD.yaw + x/100.
+                
                     
 let OnMouseDown (e:MouseButtonEventArgs):unit=
     match e.Button with

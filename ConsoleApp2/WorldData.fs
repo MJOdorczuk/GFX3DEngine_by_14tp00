@@ -1,7 +1,7 @@
 ﻿module WorldData
 open OpenTK
 open System
-
+open LightSource
 
 type InputMode =
     | Rotate
@@ -16,7 +16,7 @@ type WD() =
     static member val inputMode = Default with get, set
 
     static member val r = 1. with get, set
-    static member val alfa = Math.PI with get, set
-    static member val beta = 0. with get, set
+    static member val yaw = Math.PI with get, set
+    static member val pitch = 0. with get, set
     static member val moveV = Vector3d(0., 0., 0.) with get, set       
-    static member val lightV = Vector3d(-1.,-1.,-1.).Normalized() with get, set
+    static member val lights = [(PointLight(Vector3d(1.,1.,1.),1.,Color.White)):>ILightSource]

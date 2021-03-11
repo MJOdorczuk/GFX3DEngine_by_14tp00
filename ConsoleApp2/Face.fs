@@ -2,7 +2,6 @@
 open System
 open OpenTK
 open OpenTK.Graphics.OpenGL
-open OpenTK.Input
 open WorldData
 
 type Face (a:Vector3d, b:Vector3d, c:Vector3d, color:Color) =
@@ -23,15 +22,29 @@ type Face (a:Vector3d, b:Vector3d, c:Vector3d, color:Color) =
         GL.Enable EnableCap.DepthTest
         GL.Begin PrimitiveType.TriangleFan
 
-        let scale = Math.Sqrt(Vector3d.Dot(WD.lightV, normalV))
+        GL.Color3 (WD.lights.Head.shineOn a normalV color)
+        GL.Vertex3 a
 
-        GL.Color3 (Color.FromArgb(int color.A,int (scale * float color.R), int (scale * float color.G),int (scale * float color.B)))
+        GL.Color3 (WD.lights.Head.shineOn b normalV color)
+        GL.Vertex3 b
 
+        GL.Color3 (WD.lights.Head.shineOn c normalV color)
+        GL.Vertex3 c
+
+        GL.End()
+
+    member public __.DrawUnshaded =
+        GL.PolygonMode (MaterialFace.Front, PolygonMode.Fill)
+        GL.CullFace CullFaceMode.Front 
+        GL.Enable EnableCap.CullFace
+        GL.Enable EnableCap.DepthTest
+        GL.Begin PrimitiveType.TriangleFan
+
+        GL.Color3 color
         GL.Vertex3 a
         GL.Vertex3 b
         GL.Vertex3 c
 
         GL.End()
-
     member public __.Flipped = 
         Face(a, c, b, color)

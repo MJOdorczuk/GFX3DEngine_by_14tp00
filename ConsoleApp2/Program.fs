@@ -29,13 +29,13 @@ let UpdateCamera() =
     |> GL.LoadMatrix
 
     GL.MatrixMode MatrixMode.Modelview 
-    Matrix4d.LookAt(WD.focus+Vector3d(cos WD.alfa * -WD.r * cos WD.beta,  cos WD.beta * WD.r * sin WD.alfa, sin WD.beta * WD.r), WD.focus, Vector3d.UnitZ)
+    Matrix4d.LookAt(WD.focus+Vector3d(cos WD.yaw * -WD.r * cos WD.pitch,  cos WD.pitch * WD.r * sin WD.yaw, sin WD.pitch * WD.r), WD.focus, Vector3d.UnitZ)
     |> ref
     |> GL.LoadMatrix 
 
 let UpdateFocus (d:float) = 
-    let x = d*(cos WD.alfa)*WD.moveV.X-d*(sin WD.alfa)*WD.moveV.Y+WD.focus.X
-    let y = d*(sin WD.alfa)*WD.moveV.X+d*(cos WD.alfa)*WD.moveV.Y+WD.focus.Y
+    let x = d*(cos WD.yaw)*WD.moveV.X-d*(sin WD.yaw)*WD.moveV.Y+WD.focus.X
+    let y = d*(sin WD.yaw)*WD.moveV.X+d*(cos WD.yaw)*WD.moveV.Y+WD.focus.Y
     let z = d*WD.moveV.Z+WD.focus.Z
 
     WD.focus <- Vector3d(x,y,z)
@@ -52,9 +52,10 @@ let OnRenFrame (window:GameWindow) (e:FrameEventArgs)=
     GFX.DrawCube Vector3d.Zero 0.1 Color.Wheat
     GFX.DrawPlane (Vector3d(0.,0.,1.)) (Vector3d(0.,0.,-0.05)) Color.Yellow
 
-    WD.lightV <- Vector3d(cos t,sin t,-1.).Normalized()
+    //WD.lightV <- Vector3d(cos t,sin t,-1.).Normalized()
+    WD.lights.Head.MoveTo (Vector3d(cos t,sin t,1.).Normalized())
 
-    GFX.DrawLine Vector3d.Zero -WD.lightV Color.Yellow 2.
+    GFX.DrawCubeNoShading WD.lights.Head.source 0.1 Color.Red
 
     GL.Flush()
     UpdateCamera()
