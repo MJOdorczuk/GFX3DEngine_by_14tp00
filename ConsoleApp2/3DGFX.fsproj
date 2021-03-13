@@ -18,4 +18,8 @@
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
+  </ItemGroup>
+
 </Project>
